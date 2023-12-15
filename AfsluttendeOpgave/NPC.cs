@@ -8,35 +8,51 @@ namespace AfsluttendeOpgave
 {
     internal class NPC : Character
     {
+        /// <summary>
+        /// Empty constructor, inherits values from parent class Character. 
+        /// </summary>
+        /// <param name="name">Name of monster</param>
+        /// <param name="hP">Life points of monster</param>
+        /// <param name="xP">Experience points gained if killed</param>
         public NPC(string name, int hP, int xP) : base(name, hP, xP)
         {
         }
 
+        /// <summary>
+        /// Constructor will values that are inherited from the parent class Character, with an additional parameter NPCtype, to give the battlesimulator some variation of opponents.
+        /// </summary>
+        /// <param name="name">Name of monster</param>
+        /// <param name="hP">Life points of monster</param>
+        /// <param name="xP">Experience points gained if killed</param>
+        /// <param name="npcType">Enum type of monster identity</param>
         public NPC(string name, int hP, int xP, NPCtype npcType) : base(name, hP, xP)
         {
-            Name = name;
-            HP = hP;
-            XP = xP;
             this.NpcType = npcType;
         }
 
-        public string Name { get; set; }
-        public int HP { get; set; }
-        public int XP { get; set; }
-
-
+        /// <summary>
+        /// Helps globalize the npctype enum so it can be used in the damage calculation switch case.
+        /// </summary>
         public NPCtype NpcType { get; set; }
-
-        public override void Attack(Character playerCharacter)
+        /// <summary>
+        /// Method will substract the damage dealt to character, from their current hitpoints. 
+        /// </summary>
+        /// <param name="character">parsed in to calculate new hitpoints for opponent</param>
+        public override void Attack(Character character)
         {
             int damage = Damage();
-            
-            playerCharacter.HP -= damage;
+
+            character.HP -= damage;
 
             return;
 
         }
 
+        /// <summary>
+        /// Calculates the damage based on npctype enum. Different monsters have different difficulty, therefore different damage points.
+        /// It is intentional that I am not using the parent method as I thought this one without an int parameter would be better
+        /// </summary>
+        /// <returns>Damage number given to opponent's hitpoints</returns>
         public int Damage()
         {
             switch (NpcType)
@@ -75,83 +91,10 @@ namespace AfsluttendeOpgave
             }
         }
 
-       
-        public int SetHP(Enum npcType)
-        {
-            switch (npcType)
-            {
-                case NPCtype.Human:
-                    return HP = 100;
-
-                case NPCtype.Skeleton:
-                    return HP = 70;
-                    
-                case NPCtype.Demon:
-                    return HP = 800;
-
-                case NPCtype.Giant:
-                    return HP = 150;
-
-                case NPCtype.Dragon:
-                    return HP = 300;
-
-                case NPCtype.Boomer:
-                    return HP = 50;
-
-                case NPCtype.Herobrine:
-                    return HP = 1000000;
-
-                case NPCtype.Rat:
-                    return HP = 20;
-
-                case NPCtype.Dwarf:
-                    return HP = 110;
-
-                case NPCtype.Bananaperson:
-                    return HP = 18;
-
-                default: return 0;
-            }
-        }
-        public int SetXP(Enum npcType)
-        {
-            switch (npcType)
-            {
-                case NPCtype.Human:
-                    return XP = 200;
-
-                case NPCtype.Skeleton:
-                    return XP = 130;
-
-                case NPCtype.Demon:
-                    return XP = 2000;
-
-                case NPCtype.Giant:
-                    return XP = 340;
-
-                case NPCtype.Dragon:
-                    return XP = 1000;
-
-                case NPCtype.Boomer:
-                    return XP = 90;
-
-                case NPCtype.Herobrine:
-                    return XP = -1;
-
-                case NPCtype.Rat:
-                    return XP = 20;
-
-                case NPCtype.Dwarf:
-                    return XP = 205;
-
-                case NPCtype.Bananaperson:
-                    return XP = 18;
-
-                default: return 0;
-            }
-        }
-
     }
+    /// <summary>
+    /// Different types of NPCs that can be fought in the program. Only damage will be calculated based on these values, as some attributes were specified to be calculated elsewhere by assignment.
+    /// </summary>
     enum NPCtype
     {
         Human,

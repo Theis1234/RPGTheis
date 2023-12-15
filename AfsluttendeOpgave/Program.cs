@@ -8,6 +8,10 @@ namespace AfsluttendeOpgave
 {
     internal class Program
     {
+        /// <summary>
+        /// This method is responsible for running the battle simulation between player and NPC. 
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             List<Equipment> playerEquipment = new List<Equipment>()
@@ -22,24 +26,30 @@ namespace AfsluttendeOpgave
             try
             {
                 Player player = new Player("TheLegend27", 100, 100000, playerEquipment);
-                NPC nPC = new NPC("Skeletor", 4000, 5000, NPCtype.Skeleton);
+                NPC npc = new NPC("Skeletor", 200, 500, NPCtype.Skeleton);
 
-                while (!player.IsDead() && !nPC.IsDead())
+                int value = player.HP;
+                while (!player.CheckIfDead() && !npc.CheckIfDead())
                 {
-                    player.Attack(nPC);
-                    if (!nPC.IsDead())
+                    player.Attack(npc);
+                    if (!npc.CheckIfDead())
                     {
-                        nPC.Attack(player);
+                        npc.Attack(player);
                     }
+                }
+                if (npc.HP <= 0)
+                {
+                    Console.WriteLine("NPC has died");
+                    Console.WriteLine($"Gained {npc.XP}");
+                    player.XP += npc.XP;
                 }
                 if (player.HP <= 0)
                 {
                     Console.WriteLine("Player has died");
+                    
                 }
-                else
-                {
-                    Console.WriteLine("NPC has died");
-                }
+                
+
             }
             catch
             {
